@@ -1,7 +1,7 @@
 package work5;
 
 public class InstructorManager extends BaseUserManager {
-	public void add(Instructor user) {
+	public void add(User user) {
 		System.out.println("Instructor Added: " + user.getFirstName() + " " + user.getLastName());
 		System.out.println(user.getUserName());
 		//System.out.println("Courses:");
@@ -10,8 +10,8 @@ public class InstructorManager extends BaseUserManager {
 		//}
 	}
 	//bulk insert
-	public void addMultiple(Instructor[] users) {
-		for (Instructor user : users) {
+	public void addMultiple(User[] users) {
+		for (User user : users) {
 			add(user);
 		}
 	}
