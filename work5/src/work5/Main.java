@@ -30,7 +30,7 @@ public class Main {
 		StudentManager student = new StudentManager();
 		Student[] students = {ahmet, ali, mehmet};
 		
-		student.addMultiple(students);;
+		student.addMultiple(students);
 		
 		System.out.println("----------------");
 		
