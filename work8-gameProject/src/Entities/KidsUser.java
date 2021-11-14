@@ -2,7 +2,7 @@ package Entities;
 
 public class KidsUser extends User {
 	
-	Boolean parentalConsent;
+	boolean parentalConsent;
 
 	public boolean getParentalConsent() {
 		return parentalConsent;
