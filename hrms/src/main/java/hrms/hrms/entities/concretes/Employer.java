@@ -2,8 +2,6 @@ package hrms.hrms.entities.concretes;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -21,13 +19,10 @@ import lombok.NoArgsConstructor;
 @PrimaryKeyJoinColumn(name = "employer_id")
 public class Employer extends User {
 	
-	@Id
-	@GeneratedValue
-	
 	@Column(name = "company_name")
 	private String companyName;
 	
-	@Column(name = "web-site")
+	@Column(name = "web_site")
 	private String webSite;
 	
 	@Column(name = "phone")

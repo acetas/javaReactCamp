@@ -9,29 +9,22 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users")
 @Data
+@Table(name = "job_positions")
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+@EqualsAndHashCode(callSuper = false)
+public class JobPosition {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 	
-	@Column(name = "email")
-	private String email;
-	
-	@Column(name = "password")
-	private String password;
-	
-	private String rePassword;
-	
-	@Column(name = "status")
-	private Boolean status;
-	
+	@Column(name = "name")
+	private String name;
 }
