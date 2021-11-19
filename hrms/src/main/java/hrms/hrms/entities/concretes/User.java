@@ -29,6 +29,7 @@ public class User {
 	@Column(name = "password")
 	private String password;
 	
+	@Column(name = "re_password")
 	private String rePassword;
 	
 	@Column(name = "status")

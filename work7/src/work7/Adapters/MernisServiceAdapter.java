@@ -1,7 +1,6 @@
 package work7.Adapters;
 
 import work7.Abstract.CustomerCheckService;
-import java.rmi.RemoteException;
 import work7.Entities.Customer;
 import tr.gov.nvi.tckimlik.WS.KPSPublicSoapProxy;
 

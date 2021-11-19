@@ -6,23 +6,71 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hrms.hrms.business.abstracts.JobSeekerUserService;
+import hrms.hrms.core.utilities.adapters.abstracts.JobSeekerCheckService;
+import hrms.hrms.core.utilities.adapters.concretes.MernisServiceAdapter;
+import hrms.hrms.core.utilities.results.DataResult;
+import hrms.hrms.core.utilities.results.ErrorResult;
+import hrms.hrms.core.utilities.results.Result;
+import hrms.hrms.core.utilities.results.SuccessDataResult;
+import hrms.hrms.core.utilities.results.SuccessResult;
 import hrms.hrms.dataAccess.abstracts.JobSeekerUserDao;
 import hrms.hrms.entities.concretes.JobSeekerUser;
 
 @Service
 public class JobSeekerUserManager implements JobSeekerUserService {
 
-	JobSeekerUserDao jobSeekerUserDao;
+	private JobSeekerUserDao jobSeekerUserDao;
+	private JobSeekerCheckService jobSeekerCheckService;
 
 	@Autowired
-	public JobSeekerUserManager(JobSeekerUserDao jobSeekerUserDao) {
+	public JobSeekerUserManager(JobSeekerUserDao jobSeekerUserDao, MernisServiceAdapter jobSeekerCheckService) {
 		super();
 		this.jobSeekerUserDao = jobSeekerUserDao;
+		this.jobSeekerCheckService = jobSeekerCheckService;
 	}
 
 	@Override
-	public List<JobSeekerUser> getAll() {
-		return this.jobSeekerUserDao.findAll();
+	public DataResult<List<JobSeekerUser>> getAll() {
+		return new SuccessDataResult<List<JobSeekerUser>>(this.jobSeekerUserDao.findAll(), "İş arayanlar listelendi");
 	}
+
+	@Override
+	public Result add(JobSeekerUser jobSeekerUser) {
+		
+		 boolean checkedResult = false;
+
+	        try {
+	            checkedResult = jobSeekerCheckService.checkIfRealPerson(jobSeekerUser);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+		
+		if(jobSeekerUser.getNationaltyId() == null || jobSeekerUser.getNationaltyId() == "") {
+			return new ErrorResult("Kimlik numarası gereklidir");
+		}else if(jobSeekerUser.getFirstName() == null || jobSeekerUser.getFirstName() == "") {
+			return new ErrorResult("Adınız gereklidir");
+		}else if(jobSeekerUser.getLastName() == null || jobSeekerUser.getLastName() == "") {
+			return new ErrorResult("Soyadınız gereklidir");
+		}else if(jobSeekerUser.getEmail() == null || jobSeekerUser.getEmail() == "") {
+			return new ErrorResult("E-posta girmeniz gereklidir");
+		}else if(jobSeekerUser.getPassword() == null || jobSeekerUser.getPassword() == "") {
+			return new ErrorResult("Şifre girmeniz gereklidir");
+		}else if(jobSeekerUser.getRePassword() == null || jobSeekerUser.getRePassword() == "") {
+			return new ErrorResult("Şifreyi tekrar girmeniz gereklidir");
+		}else if(jobSeekerUser.getPassword() != jobSeekerUser.getRePassword()) {
+			return new ErrorResult("Girdiğiniz şifreler aynı değil");
+		}else if(checkedResult == false) {
+			return new ErrorResult("Mernis başarısız");
+		}else if(checkedResult == true) {
+			jobSeekerUser.setStatus(true);
+			return new SuccessResult("Mernis başarılı");
+		}else {
+			this.jobSeekerUserDao.save(jobSeekerUser);
+			return new SuccessResult("İş arayan kullanıcı eklendi");
+		}
+		
+	}
+
+	
 
 }

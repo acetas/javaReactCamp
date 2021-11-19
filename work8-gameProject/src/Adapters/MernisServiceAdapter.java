@@ -1,7 +1,5 @@
 package Adapters;
 
-import java.rmi.RemoteException;
-
 import Abstract.UserCheckService;
 import Entities.User;
 import tr.gov.nvi.tckimlik.WS.KPSPublicSoapProxy;

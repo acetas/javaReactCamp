@@ -29,5 +29,5 @@ public class JobSeekerUser extends User {
 	private String nationaltyId;
 	
 	@Column(name = "year")
-	private String year;
+	private int year;
 }
