@@ -1,7 +1,8 @@
 package hrms.hrms.core.utilities.adapters.abstracts;
 
+import hrms.hrms.core.utilities.results.Result;
 import hrms.hrms.entities.concretes.JobSeekerUser;
 
 public interface JobSeekerCheckService {
-	boolean checkIfRealPerson(JobSeekerUser jobSeekerUser) throws Exception;
+	Result checkIfRealPerson(JobSeekerUser jobSeekerUser) throws Exception;
 }

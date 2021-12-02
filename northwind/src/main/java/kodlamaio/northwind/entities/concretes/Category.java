@@ -27,7 +27,7 @@ public class Category {
 	private int categoryId;
 	
 	@Column(name="category_name")
-	private String catagoryName;
+	private String categoryName;
 	
 	@OneToMany(mappedBy = "category")
 	private List<Product> products;

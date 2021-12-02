@@ -32,7 +32,7 @@ public class JobSeekerUserController {
 	}
 	
 	@PostMapping("/add")
-	public Result add(@RequestBody JobSeekerUser jobSeekerUser) {
+	public Result add(@RequestBody JobSeekerUser jobSeekerUser) throws Exception {
 		return this.jobSeekerUserService.add(jobSeekerUser);
 	}
 }

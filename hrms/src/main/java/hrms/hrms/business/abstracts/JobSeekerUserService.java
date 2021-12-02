@@ -8,5 +8,5 @@ import hrms.hrms.entities.concretes.JobSeekerUser;
 
 public interface JobSeekerUserService {
 	DataResult<List<JobSeekerUser>> getAll();
-	Result add(JobSeekerUser jobSeekerUser);
+	Result add(JobSeekerUser jobSeekerUser) throws Exception;
 }

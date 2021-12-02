@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import hrms.hrms.business.abstracts.JobSeekerUserService;
 import hrms.hrms.core.utilities.adapters.abstracts.JobSeekerCheckService;
-import hrms.hrms.core.utilities.adapters.concretes.MernisServiceAdapter;
 import hrms.hrms.core.utilities.results.DataResult;
 import hrms.hrms.core.utilities.results.ErrorResult;
 import hrms.hrms.core.utilities.results.Result;
@@ -23,7 +22,7 @@ public class JobSeekerUserManager implements JobSeekerUserService {
 	private JobSeekerCheckService jobSeekerCheckService;
 
 	@Autowired
-	public JobSeekerUserManager(JobSeekerUserDao jobSeekerUserDao, MernisServiceAdapter jobSeekerCheckService) {
+	public JobSeekerUserManager(JobSeekerUserDao jobSeekerUserDao, JobSeekerCheckService jobSeekerCheckService) {
 		super();
 		this.jobSeekerUserDao = jobSeekerUserDao;
 		this.jobSeekerCheckService = jobSeekerCheckService;
@@ -35,16 +34,8 @@ public class JobSeekerUserManager implements JobSeekerUserService {
 	}
 
 	@Override
-	public Result add(JobSeekerUser jobSeekerUser) {
-		
-		 boolean checkedResult = false;
-
-	        try {
-	            checkedResult = jobSeekerCheckService.checkIfRealPerson(jobSeekerUser);
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-		
+	public Result add(JobSeekerUser jobSeekerUser) throws Exception {
+					
 		if(jobSeekerUser.getNationaltyId() == null || jobSeekerUser.getNationaltyId() == "") {
 			return new ErrorResult("Kimlik numarası gereklidir");
 		}else if(jobSeekerUser.getFirstName() == null || jobSeekerUser.getFirstName() == "") {
@@ -59,12 +50,10 @@ public class JobSeekerUserManager implements JobSeekerUserService {
 			return new ErrorResult("Şifreyi tekrar girmeniz gereklidir");
 		}else if(jobSeekerUser.getPassword() != jobSeekerUser.getRePassword()) {
 			return new ErrorResult("Girdiğiniz şifreler aynı değil");
-		}else if(checkedResult == false) {
+		}else if(!jobSeekerCheckService.checkIfRealPerson(jobSeekerUser).isSuccess()) {
 			return new ErrorResult("Mernis başarısız");
-		}else if(checkedResult == true) {
-			jobSeekerUser.setStatus(true);
-			return new SuccessResult("Mernis başarılı");
 		}else {
+			jobSeekerUser.setStatus(true);
 			this.jobSeekerUserDao.save(jobSeekerUser);
 			return new SuccessResult("İş arayan kullanıcı eklendi");
 		}
